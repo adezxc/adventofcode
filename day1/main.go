@@ -6,9 +6,11 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"time"
 )
 
 func main() {
+	start := time.Now()
 	file, err := os.Open("input.txt")
 	if err != nil {
 		log.Panic(err)
@@ -34,14 +36,14 @@ func main() {
 			c = number
 			counter = 0
 		}
-		fmt.Printf("%d %d %d %d %d\n", a, b, c, a+b+c, initialSum)
 		if a+b+c > initialSum {
 			initialSum = a + b + c
 			count++
 		} else {
 			initialSum = a + b + c
 		}
-
+		
 	}
+	fmt.Printf("Time since start: %d\n", time.Since(start)/1000)
 	fmt.Println(count)
 }
