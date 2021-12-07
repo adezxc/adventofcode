@@ -60,7 +60,7 @@ func readInput(fileName string) (bingoInput []int, bingoTables []BingoTable) {
 	return bingoNumbers, bingoTables
 }
 
-func updateTable(table BingoTable, number int) BingoTable{
+func updateTable(table BingoTable, number int) BingoTable {
 	for i := 0; i < 5; i++ {
 		for j := 0; j < 5; j++ {
 			if table.numbers[i][j] == number {
@@ -73,13 +73,17 @@ func updateTable(table BingoTable, number int) BingoTable{
 
 func checkTable(table BingoTable) bool {
 	for i := 0; i < 5; i++ {
-		if table.checkedNumbers[i][0] {
-			return (table.checkedNumbers[i][1] && table.checkedNumbers[i][2] && table.checkedNumbers[i][3] && table.checkedNumbers[i][4])
+			if table.checkedNumbers[i][0] {
+				if table.checkedNumbers[i][1] && table.checkedNumbers[i][2] && table.checkedNumbers[i][3] && table.checkedNumbers[i][4] {
+					return true
+				}
+			}
+			if table.checkedNumbers[0][i] {
+				if table.checkedNumbers[1][i] && table.checkedNumbers[2][i] && table.checkedNumbers[3][i] && table.checkedNumbers[4][i] {
+					return true
+				}
+			}
 		}
-		if table.checkedNumbers[0][i] {
-			return (table.checkedNumbers[1][i] && table.checkedNumbers[2][i] && table.checkedNumbers[3][i] && table.checkedNumbers[4][i])
-		}
-	}
 	return false
 }
 
@@ -88,7 +92,6 @@ func calculateWonTable(table BingoTable) (sum int) {
 		for j := 0; j < 5; j++ {
 			if !table.checkedNumbers[i][j] {
 				sum += table.numbers[i][j]
-				fmt.Println(sum)
 			}
 		}
 	}
@@ -102,7 +105,6 @@ func main() {
 		for i := 0; i < len(bingoTables); i++ {
 			bingoTables[i] = updateTable(bingoTables[i], number)
 			if checkTable(bingoTables[i]) {
-				fmt.Println(bingoTables[i])
 				fmt.Printf("%d\n", number*calculateWonTable(bingoTables[i]))
 				return
 			}
