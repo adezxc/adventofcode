@@ -45,7 +45,6 @@ func readInput(filename string) (lines []line) {
 
 func addScore(input line, grid [991][991]int) [991][991]int {
 	if input.begin.x == input.end.x || input.begin.y == input.end.y {
-		fmt.Printf("%d %d %d %d\n", input.begin.x, input.end.x, input.begin.y, input.end.y)
 		if input.begin.y > input.end.y {
 			for i := input.end.y; i <= input.begin.y; i++ {
 				grid[input.begin.x][i] += 1
