@@ -14,6 +14,7 @@ const filename = "input.txt"
 type BingoTable struct {
 	numbers        [5][5]int
 	checkedNumbers [5][5]bool
+	remove         bool
 }
 
 func readInput(fileName string) (bingoInput []int, bingoTables []BingoTable) {
@@ -104,9 +105,9 @@ func main() {
 	for _, number := range bingoInput {
 		for i := 0; i < len(bingoTables); i++ {
 			bingoTables[i] = updateTable(bingoTables[i], number)
-			if checkTable(bingoTables[i]) {
+			if checkTable(bingoTables[i]) && !bingoTables[i].remove {
 				fmt.Printf("%d\n", number*calculateWonTable(bingoTables[i]))
-				return
+				bingoTables[i].remove = true
 			}
 		}
 	}
