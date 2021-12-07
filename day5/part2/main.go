@@ -43,27 +43,50 @@ func readInput(filename string) (lines []line) {
 	return lines
 }
 
-func addScore(input line, grid [991][991]int) [991][991]int {
-	if input.begin.x == input.end.x || input.begin.y == input.end.y {
-		if input.begin.y > input.end.y {
-			for i := input.end.y; i <= input.begin.y; i++ {
-				grid[input.begin.x][i] += 1
-			}
-		} else if input.begin.x > input.end.x {
-			for i := input.end.x; i <= input.begin.x; i++ {
-				grid[i][input.begin.y] += 1
-				}
-		} else if input.begin.x < input.end.x {
-			for i := input.begin.x; i <= input.end.x; i++ {
-				grid[i][input.begin.y] += 1
-				}
-		} else if input.begin.y < input.end.y {
-			for i := input.begin.y; i <= input.end.y; i++ {
-				grid[input.begin.x][i] += 1
-			}
+func horizontalVertical(input line, grid [991][991]int) [991][991]int {
+	switch {
+	case input.begin.y > input.end.y:
+		for i := input.end.y; i <= input.begin.y; i++ {
+			grid[input.begin.x][i] += 1
 		}
-	} else if {
-		return grid
+	case input.begin.x > input.end.x:
+		for i := input.end.x; i <= input.begin.x; i++ {
+			grid[i][input.begin.y] += 1
+		}
+	case input.begin.x < input.end.x:
+		for i := input.begin.x; i <= input.end.x; i++ {
+			grid[i][input.begin.y] += 1
+		}
+	case input.begin.y < input.end.y:
+		for i := input.begin.y; i <= input.end.y; i++ {
+			grid[input.begin.x][i] += 1
+		}
+	}
+	return grid
+}
+
+func diagonal(input line, grid [991][991]int) [991][991]int {
+	upwards := true
+	if input.begin.y > input.end.y {
+		upwards = false
+	}
+	switch {
+	case input.begin.x > input.end.x && upwards :
+		for i := input.end.x; i <= input.begin.x; i++ {
+			grid[i][input.end.y-(i-input.end.x)] += 1
+		}
+	case input.begin.x > input.end.x && !upwards :
+		for i := input.end.x; i <= input.begin.x; i++ {
+			grid[i][input.end.y+(i-input.end.x)] += 1
+		}
+	case input.begin.x < input.end.x && upwards:
+		for i := input.begin.x; i <= input.end.x; i++ {
+			grid[i][input.begin.y+(i-input.begin.x)] += 1
+		}
+	case input.begin.x < input.end.x && !upwards:
+		for i := input.begin.x; i <= input.end.x; i++ {
+			grid[i][input.begin.y-(i-input.begin.x)] += 1
+		}
 	}
 	return grid
 }
@@ -82,7 +105,11 @@ func main() {
 	grid := [991][991]int{}
 	lines := readInput(filename)
 	for _, line := range lines {
-		grid = addScore(line, grid)
+		if line.begin.y == line.end.y || line.begin.x == line.end.x {
+			grid = horizontalVertical(line, grid)
+		} else {
+			grid = diagonal(line, grid)
+		}
 	}
 	answer := calculate(grid)
 	fmt.Printf("%d", answer)
