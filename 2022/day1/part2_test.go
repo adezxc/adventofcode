@@ -14,7 +14,7 @@ func TestThreeMaxCalories(t *testing.T) {
 	}{
 		{"empty", args{}, 0, true},
 		{"example", args{filename: "test_input.txt"}, 45000, false},
-		{"input", args{filename: "input.txt"}, 68467, false},
+		{"input", args{filename: "input.txt"}, 203420, false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
