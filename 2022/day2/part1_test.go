@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestHello(t *testing.T) {
+func TestCalculateOutcome(t *testing.T) {
 	testCases := [][]string{{"A", "Y"}, {"B", "X"}, {"C", "Z"}}
 	want := []int{8, 1, 6}
 
@@ -17,5 +17,13 @@ func TestHello(t *testing.T) {
 		}
 
 	}
+}
 
+func TestReadInput(t *testing.T) {
+	got := ReadInput("example_input")
+	want := 15
+
+	if got != want {
+		t.Errorf("got %d want %d", got, want)
+	}
 }
