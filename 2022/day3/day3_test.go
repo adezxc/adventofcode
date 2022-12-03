@@ -25,3 +25,12 @@ func TestReadInput(t *testing.T) {
 
 	readInput("input")
 }
+
+func TestCommonBadge(t *testing.T) {
+	got := commonBadge([]string{"vJrwpWtwJgWrhcsFMMfFFhFp", "jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL", "PmmdzqPrVvPwwTWBwg"})
+	want := 18
+
+	if got != want {
+		t.Errorf("got %d want %d given", got, want)
+	}
+}
