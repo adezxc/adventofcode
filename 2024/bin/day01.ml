@@ -30,9 +30,7 @@ let rec get_basement_entrance input current_floor current_position =
 let () =
   let input_list = string_to_char_list lines in
   let floor = get_floor input_list 0 in
-  let basement_entrance =
-    get_basement_entrance input_list 0 0
-  in
+  let basement_entrance = get_basement_entrance input_list 0 0 in
   Printf.printf "Part 1 solution: %d\n" floor;
-  Printf.printf "Part 2 solution: %d\n" basement_entrance;
+  Printf.printf "Part 2 solution: %d\n" basement_entrance
 ;;
