@@ -40,8 +40,9 @@ let calculate_frequencies lst =
   List.fold_left add initial_freq lst
 ;;
 
-let calc_part_2 = 
+let calc_part_2 =
   let list_freq = calculate_frequencies second_list in
-  List.fold_left (fun acc a -> acc + (list_freq a) * a) 0 first_list 
+  List.fold_left (fun acc a -> acc + (list_freq a * a)) 0 first_list
+;;
 
 let () = Printf.printf "Part 2 solution: %d\n" calc_part_2
