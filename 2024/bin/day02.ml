@@ -2,78 +2,55 @@ let lines = Aoc.read_lines "inputs/day02.txt"
 
 let get_levels line =
   List.map int_of_string (Str.split (Str.regexp "[ \t]+") line)
-;;
 
-let rec remove_last l = 
-   match l with 
-   | [] -> [] 
-   | [_] -> [] 
-   | hd::tl -> hd::(remove_last tl);;
-
-let rec check_decreasing_level_safety level =
-  match level with
-  | [] -> true
-  | [ x; y ] when (x <= y || x - y > 3) -> false
-  | x :: y :: _ when (x <= y || x - y > 3) -> false
-  | x :: y :: tl when x > y && x - y <= 3 ->
-    check_decreasing_level_safety (y :: tl)
-  | [ x; y ] when x > y && x - y <= 3 -> true
-  | _ :: _ -> true
-;;
-
-let rec check_decreasing_level_safety_branch level =
-  match level with
-  | [] -> true
-  | x :: y :: tl when (x <= y || x - y > 3) ->
-    (check_decreasing_level_safety (x :: tl) || check_decreasing_level_safety (y :: tl))
-  | x :: y :: tl when x > y && x - y <= 3 ->
-    check_decreasing_level_safety_branch (y :: tl)
-  | _ :: _ -> true
-;;
-
-let rec check_increasing_level_safety level =
-  match level with
-  | [] -> true
-  | [ x; y ] when (x >= y || y - x > 3) -> false
-  | x :: y :: _ when (x >= y || y - x > 3) -> false
-  | x :: y :: tl when x < y && y - x <= 3 ->
-    check_increasing_level_safety (y :: tl)
-  | [ x; y ] when x < y && y - x <= 3 -> true
-  | _ :: _ -> true
-;;
-
-let rec check_increasing_level_safety_branch level =
-  match level with
-  | [] -> true
-  | x :: y :: tl when (x >= y || y - x > 3) ->
-    (check_increasing_level_safety (y :: tl) || check_increasing_level_safety (x :: tl))
-  | x :: y :: tl when x < y && y - x <= 3 ->
-    check_increasing_level_safety_branch (y :: tl)
-  | _ :: _ -> true
-;;
-
-let check_level_safety level =
-  match level with
-  | [] -> true
-  | x :: y :: _ when x = y -> false
-  | x :: y :: _ when x > y -> check_decreasing_level_safety level
-  | x :: y :: _ when x < y -> check_increasing_level_safety level
-  | _ :: _ -> true
-;;
-
-let check_level_safety_branch level =
-  match level with
-  | [] -> true
-  | x :: y :: tl when x = y -> (check_level_safety (x::tl) || check_level_safety (y::tl))
-  | x :: y :: _ when x > y -> check_decreasing_level_safety_branch level
-  | x :: y :: _ when x < y -> check_increasing_level_safety_branch level
-  | _ :: _ -> true
-;;
-
-(* Map `check_level_safety` with tolerance of 0 *)
 let levels = List.map get_levels lines
 
-let () = print_int (List.length (List.filter (fun level -> level = true) bools))
-let () = print_endline ""
-let () = print_int (List.length (List.filter (fun level -> level = true) bools_p2))
-let () = print_endline ""
+(* Check if a list is strictly increasing with differences between 1 and 3 *)
+let is_increasing lst =
+  let rec aux prev = function
+    | [] -> true
+    | x :: xs -> (x > prev && x - prev <= 3) && aux x xs
+  in
+  match lst with
+  | [] | [_] -> true (* Empty or single-element list is trivially safe *)
+  | x :: xs -> aux x xs
+
+(* Check if a list is strictly decreasing with differences between 1 and 3 *)
+let is_decreasing lst =
+  let rec aux prev = function
+    | [] -> true
+    | x :: xs -> (prev > x && prev - x <= 3) && aux x xs
+  in
+  match lst with
+  | [] | [_] -> true (* Empty or single-element list is trivially safe *)
+  | x :: xs -> aux x xs
+
+(* Check if a list is safe (increasing or decreasing) *)
+let is_safe lst = is_increasing lst || is_decreasing lst
+
+let is_safe_with_dampener lst =
+  let rec aux idx =
+    if idx >= List.length lst then false
+    else
+      let filtered = List.filteri (fun i _ -> i <> idx) lst in
+      if is_safe filtered then true else aux (idx + 1)
+  in
+  is_safe lst || aux 0
+
+(* Count safe reports *)
+let count_safe_reports reports =
+  List.fold_left (fun acc report -> if is_safe report then acc + 1 else acc) 0 reports
+
+(* Count safe reports with the Problem Dampener *)
+let count_safe_reports_with_dampener reports =
+  List.fold_left (fun acc report -> if is_safe_with_dampener report then acc + 1 else acc) 0 reports
+
+(* Example usage *)
+let () =
+  let safe_reports_part1 = count_safe_reports levels in
+  let safe_reports_part2 = count_safe_reports_with_dampener levels in
+  Printf.printf "Part 1: %d\n" safe_reports_part1;
+  Printf.printf "Part 2: %d\n" safe_reports_part2
+
+
+
