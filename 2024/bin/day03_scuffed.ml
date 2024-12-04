@@ -4,7 +4,8 @@ let find_muls mem =
   (* Str.Regexp compatible pattern that captures two groups *)
   let patt = Str.regexp {|mul(\([0-9]+\),\([0-9]+\))|}
   and group n = Str.matched_group n mem |> int_of_string in
-  let rec parse idx pairs = try
+  let rec parse idx pairs =
+    try
       let jdx = Str.search_forward patt mem idx
       and pair = group 1, group 2 in
       parse (Int.succ jdx) (List.cons pair pairs)
@@ -40,14 +41,17 @@ let find_muls_p2 mem =
   let rec parse idx until_idx pairs =
     try
       (* Terminate if idx is beyond or equal to the content length *)
-      if idx >= String.length mem then pairs
-      else if idx <= until_idx then (
-        let jdx = Str.search_forward patt mem idx 
+      if idx >= String.length mem
+      then pairs
+      else if idx <= until_idx
+      then (
+        let jdx = Str.search_forward patt mem idx
         and pair = group 1, group 2 in
-        if jdx > until_idx then 
-        let new_idx = find_do_index mem until_idx in
-        let new_until_idx = find_dont_index mem new_idx in
-        parse new_idx new_until_idx pairs
+        if jdx > until_idx
+        then (
+          let new_idx = find_do_index mem until_idx in
+          let new_until_idx = find_dont_index mem new_idx in
+          parse new_idx new_until_idx pairs)
         else parse (Int.succ jdx) until_idx (List.cons pair pairs))
       else (
         let new_idx = find_do_index mem until_idx in

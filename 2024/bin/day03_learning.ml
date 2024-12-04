@@ -5,6 +5,7 @@
 let read_in path =
   let open In_channel in
   with_open_text path input_all
+;;
 
 (* Part 1 *)
 let find_muls mem =
@@ -12,28 +13,36 @@ let find_muls mem =
   and group n = Str.matched_group n mem |> int_of_string in
   let rec parse idx pairs =
     try
-      let jdx = Str.search_forward patt mem idx and pair = (group 1, group 2) in
+      let jdx = Str.search_forward patt mem idx
+      and pair = group 1, group 2 in
       parse (Int.succ jdx) (List.cons pair pairs)
-    with Not_found -> pairs
+    with
+    | Not_found -> pairs
   in
   parse 0 []
+;;
 
 let sum_muls mem =
   find_muls mem |> List.fold_left (fun sum (x, y) -> sum + (x * y)) 0
+;;
 
 let fst_solve path = read_in path |> sum_muls
 
 (* XXXXXXXXX *)
 
 (* Part 2 *)
-type statement = Enabled | Disabled | Mul of int * int
+type statement =
+  | Enabled
+  | Disabled
+  | Mul of int * int
 
 let parse_stmt mem = function
   | "do()" -> Enabled
   | "don't()" -> Disabled
   | _pair ->
-      let group n = Str.matched_group n mem |> int_of_string in
-      Mul (group 1, group 2)
+    let group n = Str.matched_group n mem |> int_of_string in
+    Mul (group 1, group 2)
+;;
 
 let find_muls_with_cond mem =
   let patt = Str.regexp {|mul(\([0-9]+\),\([0-9]+\))\|do()\|don't()|} in
@@ -42,19 +51,22 @@ let find_muls_with_cond mem =
       let jdx = Str.search_forward patt mem idx
       and stmt = Str.matched_string mem |> parse_stmt mem in
       parse_mem (Int.succ jdx) (List.cons stmt stmts)
-    with Not_found -> List.rev stmts
+    with
+    | Not_found -> List.rev stmts
   in
   parse_mem 0 []
+;;
 
 let sum_muls_with_cond mem =
   find_muls_with_cond mem
   |> List.fold_left
        (fun ((mode, sum) as dat) stmt ->
          match stmt with
-         | Enabled -> (Enabled, sum)
-         | Disabled -> (Disabled, sum)
-         | Mul (x, y) -> if mode = Enabled then (mode, sum + (x * y)) else dat)
+         | Enabled -> Enabled, sum
+         | Disabled -> Disabled, sum
+         | Mul (x, y) -> if mode = Enabled then mode, sum + (x * y) else dat)
        (Enabled, 0)
+;;
 
 let snd_solve path = read_in path |> sum_muls_with_cond |> snd
 
