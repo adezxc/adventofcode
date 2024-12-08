@@ -13,15 +13,17 @@ let compare_chars chars =
   = xmas
 ;;
 
-let compare_chars_p2 chars = 
-  chars = [ 'M'; 'A'; 'S'; 'M'; 'A'; 'S'] || 
-  chars = [ 'M'; 'A'; 'S'; 'S'; 'A'; 'M'] || 
-  chars = [ 'S'; 'A'; 'M'; 'M'; 'A'; 'S'] || 
-  chars = [ 'S'; 'A'; 'M'; 'S'; 'A'; 'M'] 
+let compare_chars_p2 chars =
+  chars = [ 'M'; 'A'; 'S'; 'M'; 'A'; 'S' ]
+  || chars = [ 'M'; 'A'; 'S'; 'S'; 'A'; 'M' ]
+  || chars = [ 'S'; 'A'; 'M'; 'M'; 'A'; 'S' ]
+  || chars = [ 'S'; 'A'; 'M'; 'S'; 'A'; 'M' ]
+;;
 
 let get_chars grid x y dx dy =
   List.init 4 (fun i ->
     get_letter_from_grid grid (x + (i * dx)) (!y + (i * dy)))
+;;
 
 let get_chars_p2 grid x y =
   [ get_letter_from_grid grid (x + 1) (!y + 1)
@@ -45,9 +47,7 @@ let directions =
   ]
 ;;
 
-let directions_p2 =
-  [ (fun grid x y -> get_chars_p2 grid x y)]
-;;
+let directions_p2 = [ (fun grid x y -> get_chars_p2 grid x y) ]
 
 let find_word grid x y =
   let results = List.map (fun f -> f grid x y) directions in
