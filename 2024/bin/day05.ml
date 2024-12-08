@@ -7,6 +7,7 @@ let rec is_sublist main_list sub_list =
     if List.exists (fun i -> head == i) main_list
     then true
     else is_sublist main_list tail
+
 ;;
 
 let read_rules_and_updates filename =

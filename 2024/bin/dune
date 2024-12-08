@@ -1,4 +1,5 @@
 (executables
  (public_names day01 day02 day03_learning day03_scuffed day04 day05 day06)
  (names day01 day02 day03_learning day03_scuffed day04 day05 day06)
+ (flags (:standard -w -32 -w -27 -w -69))
  (libraries aoc str))

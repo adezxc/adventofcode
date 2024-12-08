@@ -26,7 +26,7 @@ let sum_muls mem =
   find_muls mem |> List.fold_left (fun sum (x, y) -> sum + (x * y)) 0
 ;;
 
-let fst_solve path = read_in path |> sum_muls
+let _fst_solve path = read_in path |> sum_muls
 
 (* XXXXXXXXX *)
 
@@ -68,6 +68,6 @@ let sum_muls_with_cond mem =
        (Enabled, 0)
 ;;
 
-let snd_solve path = read_in path |> sum_muls_with_cond |> snd
+let _snd_solve path = read_in path |> sum_muls_with_cond |> snd
 
 (* XXXXXXXX *)
