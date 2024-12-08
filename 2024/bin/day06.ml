@@ -138,8 +138,7 @@ let read_gamestate filename =
          String.to_seq line
          |> Seq.map (fun c ->
            match char_to_block_type c with
-           | Some value ->
-             Some value (* Assuming char_to_block_type returns an option type *)
+           | Some value -> Some value
            | None -> None)
          |> List.of_seq)
        lines)
