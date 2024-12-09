@@ -44,7 +44,9 @@ let find_solution sum products branch_rule =
     | [] -> branches
     | first :: tail ->
       let branches =
-        List.map (fun b -> branch_rule first b) branches |> List.flatten
+        List.map (fun b -> branch_rule first b) branches
+        |> List.flatten
+        |> List.filter (fun x -> x <= sum)
       in
       branch_out branches tail
   in
