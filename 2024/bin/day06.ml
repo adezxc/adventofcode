@@ -71,13 +71,6 @@ let direction_to_movement = function
   | Right -> { x = 1; y = 0 }
 ;;
 
-let direction_to_string = function
-  | Up -> "UP"
-  | Down -> "Down"
-  | Left -> "Left"
-  | Right -> "Right"
-;;
-
 let char_to_block_type = function
   | '.' -> Some Empty
   | '#' -> Some Obstruction
@@ -265,19 +258,17 @@ let () =
   match gamestate with
   | None -> raise (Invalid_argument "BAD GAMESTATE")
   | Some state ->
-    let modified_gamestates = generate_all_modifications state in
     let () =
-      Printf.printf "modified states %d\n" (List.length modified_gamestates)
+      Printf.printf
+        "Part 1: %d\n"
+        (List.length (CoordinateSet.elements (step_gamestate state)))
     in
+    let modified_gamestates = generate_all_modifications state in
     let infinite_loops =
       List.fold_left
         (fun acc state -> if step_gamestate_p2 state then acc + 1 else acc)
         0
         modified_gamestates
     in
-    let () = Printf.printf "Part 2: %d\n " infinite_loops in
-    (match gamestate with
-     | None -> raise (Invalid_argument "BAD GAMESTATE")
-     | Some state ->
-       print_int (List.length (CoordinateSet.elements (step_gamestate state))))
+    Printf.printf "Part 2: %d\n " infinite_loops
 ;;
