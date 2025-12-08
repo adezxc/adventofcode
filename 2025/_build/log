@@ -1,0 +1,16 @@
+# dune exec day06
+# OCAMLPARAM: unset
+# Shared cache: enabled-except-user-rules
+# Shared cache location: /home/adam/.cache/dune/db
+# Workspace root: /home/adam/repos/adventofcode/2025
+# Auto-detected concurrency: 12
+# Dune context:
+#  { name = "default"
+#  ; kind = "default"
+#  ; profile = Dev
+#  ; merlin = true
+#  ; fdo_target_exe = None
+#  ; build_dir = In_build_dir "default"
+#  ; instrument_with = []
+#  }
+$ /home/adam/.opam/ocaml-base-compiler/bin/ocamlc.opt -config > /tmp/dune_7e0dbe_output
