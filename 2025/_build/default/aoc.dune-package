@@ -1,6 +1,0 @@
-(lang dune 3.20)
-(name aoc)
-(sections (lib .) (bin ../../bin))
-(files
- (lib (META dune-package opam))
- (bin (day01 day02 day03 day04 day05 day06)))
