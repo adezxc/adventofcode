@@ -82,11 +82,6 @@ let parse_line line lengths =
                  end
     in aux line lengths []                    
 
-let explode s =
-  let rec exp i l =
-    if i < 0 then l else exp (i - 1) (s.[i] :: l) in
-  exp (String.length s - 1) [];;
-
 let calc_lengths symbol_line =
   let strings = Str.split (Str.regexp "[*|+]") symbol_line in
   List.map (String.length) strings 
@@ -96,7 +91,7 @@ let parse_input_p2 input =
   let rec parse_lines input acc =
   match input with
   | [x] -> (List.rev acc, (parse_symbols x))
-  | x :: xs -> parse_lines xs ((parse_line (explode x) lengths) :: acc)
+  | x :: xs -> parse_lines xs ((parse_line (Aoc.explode x) lengths) :: acc)
   | _ -> failwith "unexpected argument" in
   parse_lines input [] 
 

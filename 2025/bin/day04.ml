@@ -57,7 +57,7 @@ let calc_paper_rolls grid position =
   0
 
 let part1 =
-  let grid = List.map Aoc.string_to_char_list input in
+  let grid = List.map Aoc.explode input in
   let positions = List.init (List.length input) (fun x -> List.init (List.length (List.hd grid)) (fun y -> (x, y))) in
   List.fold_left (List.fold_left (fun acc pos -> acc + calc_paper_rolls grid pos)) 0 positions
 
@@ -96,7 +96,7 @@ let calc_removed_grid positions =
   List.fold_left_map (fun acc row -> calc_removed_row acc positions row) 0 positions
 
 let part2 =
-  let grid = List.map Aoc.string_to_char_list input in
+  let grid = List.map Aoc.explode input in
   let positions = List.init
                    (List.length input)
                    (fun x -> List.init (List.length (List.hd grid))

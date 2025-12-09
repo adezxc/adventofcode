@@ -11,5 +11,8 @@ let read_lines file =
     Core.String.split_lines x)
 ;;
 
-let string_to_char_list s = s |> String.to_seq |> List.of_seq
+let explode s =
+  let rec exp i l =
+    if i < 0 then l else exp (i - 1) (s.[i] :: l) in
+  exp (String.length s - 1) [];;
 
